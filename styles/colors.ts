@@ -20,3 +20,5 @@ export const colors = Object.keys(tailwindColors).reduce((acc, curr) => {
     return { ...acc, [key]: value };
   }
 }, {});
+
+console.log(colors)
