@@ -19,6 +19,9 @@ const responsiveProperties = defineProperties({
   },
   defaultCondition: "mobile",
   properties: {
+    height: {
+      "h-100": "100px",
+    },
     display: ["none", "flex", "block", "inline"],
     flexDirection: ["row", "column"],
     justifyContent: [
@@ -44,20 +47,41 @@ const responsiveProperties = defineProperties({
   },
 });
 
-const colorProperties = defineProperties({
+// const colorProperties = defineProperties({
+//   conditions: {
+//     lightMode: {},
+//     darkMode: { "@media": "(prefers-color-scheme: dark)" },
+//   },
+//   defaultCondition: "lightMode",
+//   properties: {
+//     color: colors,
+//     background: colors,
+//     // etc.
+//   },
+// });
+
+const systemProperties = defineProperties({
   conditions: {
-    lightMode: {},
-    darkMode: { "@media": "(prefers-color-scheme: dark)" },
+    none: {},
+    lightMode: {
+      selector: `.light &`,
+    },
+    darkMode: {
+      selector: `.dark &`,
+    },
   },
-  defaultCondition: "lightMode",
+  defaultCondition: "none",
   properties: {
     color: colors,
     background: colors,
-    // etc.
+    // borderColor: colors,
   },
 });
 
-export const sprinkles = createSprinkles(responsiveProperties, colorProperties);
+export const sprinkles = createSprinkles(
+  responsiveProperties,
+  systemProperties
+);
 
 // It's a good idea to export the Sprinkles type too
 export type Sprinkles = Parameters<typeof sprinkles>[0];
