@@ -18,7 +18,7 @@ import { colors } from "./colors";
  * tldr; can shove spacing and stuff into a theme. but I prefer to create a "tailwind" via sprinkles.
  * I'll use themes in the event that I'm building a white label app. Or a design system that needs to adapt. E.g.
  * like Garden theme can be updated so that Lyft can use it.
- * 
+ *
  * P.S. a theme can consume tokens created with defineProperty...
  */
 export const [themeA, vars] = createTheme({
