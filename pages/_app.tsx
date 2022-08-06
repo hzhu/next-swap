@@ -1,4 +1,5 @@
 import Script from "next/script";
+import Head from "next/head";
 import {
   initialize,
   useColorScheme,
@@ -11,14 +12,9 @@ function App({ Component, pageProps }) {
   const [colorScheme, setColorScheme] = useColorScheme(colorSchemeCookie);
 
   return (
-    <>
-      <Script id="color-scheme-initialization">
-        {initialize(colorSchemeCookie)}
-      </Script>
-      <ColorSchemeContext.Provider value={{ colorScheme, setColorScheme }}>
-        <Component {...pageProps} />
-      </ColorSchemeContext.Provider>
-    </>
+    <ColorSchemeContext.Provider value={{ colorScheme, setColorScheme }}>
+      <Component {...pageProps} />
+    </ColorSchemeContext.Provider>
   );
 }
 
