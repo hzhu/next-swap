@@ -5,7 +5,9 @@ import { useColorSchemeContext } from "../lib/color-scheme";
 // Todo: clean up sample styles
 const container = sprinkles({
   display: "flex",
-  paddingX: "large",
+  px: "0",
+  m: "0",
+  text: "2xl",
 
   // Conditional sprinkles:
   flexDirection: {

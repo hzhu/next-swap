@@ -1,15 +1,16 @@
 import { defineProperties, createSprinkles } from "@vanilla-extract/sprinkles";
+import tailwindColors from "tailwindcss/colors";
+import defaultConfig from "tailwindcss/defaultConfig";
 import { colors } from "./colors";
 
-// This file is where we recreate Tailwind
-
-const space = {
-  none: 0,
-  small: "4px",
-  medium: "8px",
-  large: "16px",
-  // etc.
-};
+// Compute Tailwind for Sprinkles to consume.
+const { spacing, fontSize } = defaultConfig.theme;
+const computed = {
+  colors: colors(tailwindColors),
+  space: spacing as Record<string, string>,
+  fontSize: Object.keys(fontSize).reduce((acc, key) => ({ ...acc, [key]: fontSize[key][0]}), {}),
+  lineHeight: Object.keys(fontSize).reduce((acc, key) => ({ ...acc, [key]: fontSize[key][1].lineHeight}), {})
+}
 
 const responsiveProperties = defineProperties({
   conditions: {
@@ -33,17 +34,29 @@ const responsiveProperties = defineProperties({
       "space-between",
     ],
     alignItems: ["stretch", "flex-start", "center", "flex-end"],
-    paddingTop: space,
-    paddingBottom: space,
-    paddingLeft: space,
-    paddingRight: space,
+    padding: computed.space,
+    paddingTop: computed.space,
+    paddingBottom: computed.space,
+    paddingLeft: computed.space,
+    paddingRight: computed.space,
+    margin: computed.space,
+    marginTop: computed.space,
+    marginBottom: computed.space,
+    marginLeft: computed.space,
+    marginRight: computed.space,
+    fontSize: computed.fontSize,
+    lineHeight: computed.lineHeight,
     // etc.
   },
   shorthands: {
-    padding: ["paddingTop", "paddingBottom", "paddingLeft", "paddingRight"],
-    paddingX: ["paddingLeft", "paddingRight"],
-    paddingY: ["paddingTop", "paddingBottom"],
+    p: ["paddingTop", "paddingBottom", "paddingLeft", "paddingRight"],
+    px: ["paddingLeft", "paddingRight"],
+    py: ["paddingTop", "paddingBottom"],
+    m: ["marginTop", "marginBottom", "marginLeft", "marginRight"],
+    mx: ["marginLeft", "marginRight"],
+    my: ["marginTop", "marginBottom"],
     placeItems: ["justifyContent", "alignItems"],
+    text: ["fontSize", "lineHeight"],
   },
 });
 
@@ -72,8 +85,8 @@ const systemProperties = defineProperties({
   },
   defaultCondition: "none",
   properties: {
-    color: colors,
-    background: colors,
+    color: computed.colors,
+    background: computed.colors,
     // borderColor: colors,
   },
 });

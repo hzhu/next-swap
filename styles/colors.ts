@@ -1,12 +1,16 @@
-import tailwindColors from "tailwindcss/colors";
+export const colors = (tailwindColors) => Object.keys(tailwindColors).reduce((acc, curr) => {
+  const deprecatedColors = [
+    "lightBlue",
+    "warmGray",
+    "trueGray",
+    "coolGray",
+    "blueGray",
+  ];
 
-delete tailwindColors.lightBlue;
-delete tailwindColors.warmGray;
-delete tailwindColors.trueGray;
-delete tailwindColors.coolGray;
-delete tailwindColors.blueGray;
+  if (deprecatedColors.includes(curr)) {
+    return acc;
+  }
 
-export const colors = Object.keys(tailwindColors).reduce((acc, curr) => {
   const key = curr;
   const value = tailwindColors[key];
 
