@@ -1,4 +1,4 @@
-export const colors = (tailwindColors) => Object.keys(tailwindColors).reduce((acc, curr) => {
+export const getColors = (tailwindColors) => Object.keys(tailwindColors).reduce((acc, curr) => {
   const deprecatedColors = [
     "lightBlue",
     "warmGray",

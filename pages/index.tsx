@@ -4,11 +4,19 @@ import { useColorSchemeContext } from "../lib/color-scheme";
 
 // Todo: clean up sample styles
 const container = sprinkles({
-  display: "flex",
   px: "0",
   m: "0",
   text: "2xl",
-
+  maxWidth: {
+    mobile: "sm",
+    tablet: "xl",
+    desktop: "4xl",
+  },
+  display: "flex",
+  bg: {
+    darkMode: "purple-800",
+    lightMode: "purple-300",
+  },
   // Conditional sprinkles:
   flexDirection: {
     mobile: "column",

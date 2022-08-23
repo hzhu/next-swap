@@ -1,16 +1,19 @@
 import { defineProperties, createSprinkles } from "@vanilla-extract/sprinkles";
 import tailwindColors from "tailwindcss/colors";
 import defaultConfig from "tailwindcss/defaultConfig";
-import { colors } from "./colors";
+import { getColors } from "./colors";
+import defaultConfigStub from "tailwindcss/stubs/defaultConfig.stub";
 
 // Compute Tailwind for Sprinkles to consume.
-const { spacing, fontSize } = defaultConfig.theme;
-const computed = {
-  colors: colors(tailwindColors),
-  space: spacing as Record<string, string>,
-  fontSize: Object.keys(fontSize).reduce((acc, key) => ({ ...acc, [key]: fontSize[key][0]}), {}),
-  lineHeight: Object.keys(fontSize).reduce((acc, key) => ({ ...acc, [key]: fontSize[key][1].lineHeight}), {})
-}
+let { spacing, fontSize } = defaultConfig.theme;
+spacing = spacing as Record<string, string>
+fontSize = Object.keys(fontSize).reduce((acc, key) => ({ ...acc, [key]: fontSize[key][0]}), {});
+const colors = getColors(tailwindColors);
+const lineHeight = Object.keys(fontSize).reduce((acc, key) => ({ ...acc, [key]: fontSize[key][1].lineHeight}), {})
+const maxWidth = defaultConfigStub.theme.maxWidth({
+  theme: () => {},
+  breakpoints: () => {}
+})
 
 const responsiveProperties = defineProperties({
   conditions: {
@@ -23,6 +26,7 @@ const responsiveProperties = defineProperties({
     height: {
       "h-100": "100px",
     },
+    maxWidth: maxWidth,
     display: ["none", "flex", "block", "inline"],
     flexDirection: ["row", "column"],
     justifyContent: [
@@ -34,18 +38,18 @@ const responsiveProperties = defineProperties({
       "space-between",
     ],
     alignItems: ["stretch", "flex-start", "center", "flex-end"],
-    padding: computed.space,
-    paddingTop: computed.space,
-    paddingBottom: computed.space,
-    paddingLeft: computed.space,
-    paddingRight: computed.space,
-    margin: computed.space,
-    marginTop: computed.space,
-    marginBottom: computed.space,
-    marginLeft: computed.space,
-    marginRight: computed.space,
-    fontSize: computed.fontSize,
-    lineHeight: computed.lineHeight,
+    padding: spacing,
+    paddingTop: spacing,
+    paddingBottom: spacing,
+    paddingLeft: spacing,
+    paddingRight: spacing,
+    margin: spacing,
+    marginTop: spacing,
+    marginBottom: spacing,
+    marginLeft: spacing,
+    marginRight: spacing,
+    fontSize: fontSize as Record<string, string>,
+    lineHeight: lineHeight,
     // etc.
   },
   shorthands: {
@@ -57,21 +61,9 @@ const responsiveProperties = defineProperties({
     my: ["marginTop", "marginBottom"],
     placeItems: ["justifyContent", "alignItems"],
     text: ["fontSize", "lineHeight"],
+    "max-w": ["maxWidth"]
   },
 });
-
-// const colorProperties = defineProperties({
-//   conditions: {
-//     lightMode: {},
-//     darkMode: { "@media": "(prefers-color-scheme: dark)" },
-//   },
-//   defaultCondition: "lightMode",
-//   properties: {
-//     color: colors,
-//     background: colors,
-//     // etc.
-//   },
-// });
 
 const systemProperties = defineProperties({
   conditions: {
@@ -85,10 +77,13 @@ const systemProperties = defineProperties({
   },
   defaultCondition: "none",
   properties: {
-    color: computed.colors,
-    background: computed.colors,
-    // borderColor: colors,
+    color: colors,
+    background: colors,
+    borderColor: colors,
   },
+  shorthands: {
+    bg: ["background"],
+  }
 });
 
 export const sprinkles = createSprinkles(
